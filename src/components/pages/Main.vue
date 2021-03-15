@@ -1,11 +1,19 @@
 <script>
     import Map from "./map/Map";
+    import Detail from "./map/detail/Detail";
 
     export default {
         name: 'Main',
-        components: {Map},
+        components: {
+            Detail,
+            Map
+        },
         props: {},
-        computed: {},
+        computed: {
+            currentMunicipality() {
+                return this.$store.state.municipalities.current;
+            }
+        },
         methods: {}
     }
 </script>
@@ -14,6 +22,9 @@
 <template>
     <div class="Main">
         <Map/>
+        <Detail
+            v-if="currentMunicipality"
+            :municipality="currentMunicipality"/>
     </div>
 </template>
 
@@ -26,6 +37,11 @@
         height: 100%;
 
         .Map {
+            width: 50%;
+            height: 100%;
+        }
+
+        .Detail {
             width: 50%;
             height: 100%;
         }

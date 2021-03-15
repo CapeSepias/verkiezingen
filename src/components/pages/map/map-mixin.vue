@@ -34,12 +34,12 @@
                     this.canvas.width = this.width;
                     this.canvas.height = this.height;
                     this.draw();
-                    //this.addEvents();
+                    this.addEvents();
                 });
-                //
-                // $(window).resize(() => {
-                //     this.resize();
-                // });
+
+                $(window).resize(() => {
+                    this.resize();
+                });
             },
             resize() {
                 this.measure();
@@ -51,8 +51,8 @@
                 });
             },
             clearCache() {
-                for (let region of this.$store.state[this.currentMap.module].all) {
-                    for (let path of region.paths) {
+                for (let municipality of this.municipalities) {
+                    for (let path of municipality.paths) {
                         path.storedPaths = {};
                     }
                 }
@@ -84,39 +84,31 @@
             },
             addClickEvent() {
                 this.canvas.addEventListener('click', (event) => {
-                    let x, y, region;
+                    let x, y, municipality;
                     x = event.offsetX;
                     y = event.offsetY;
-                    region = this.getRegionForPoint(x, y);
-                    if (region) {
-                        this.view.currentRegion = region;
-                        this.$store.commit('ui/updateProperty', {key: 'menu', value: 'city'});
-                        this.$store.commit('ui/updateProperty', {key: 'searchValue', value: ''});
-                        this.$store.commit('ui/updateProperty', {key: 'hoverValue', value: ''});
-                    } else {
-                        this.view.currentRegion = region;
+                    municipality = this.getMunicipalityForPoint(x, y);
+                    if (municipality) {
+                        this.$store.commit('municipalities/setCurrent', municipality)
                     }
                 }, false);
             },
             addHoverEvent() {
                 this.canvas.addEventListener('mousemove', (event) => {
-                    let x, y, region;
+                    let x, y, municipality;
                     x = event.offsetX;
                     y = event.offsetY;
-                    region = this.getRegionForPoint(x, y);
-                    if (region) {
-                        this.$store.commit('ui/updateProperty', {key: 'hoverValue', value: region.title});
-                    } else {
-                        this.$store.commit('ui/updateProperty', {key: 'hoverValue', value: ''});
+                    municipality = this.getMunicipalityForPoint(x, y);
+                    if (municipality) {
+                        console.log(municipality.title);
                     }
                 }, false);
             },
-            getRegionForPoint(x, y) {
-                let reversed = this.regions.slice().reverse();
-                for (let region of reversed) {
-                    for (let path of region.paths) {
+            getMunicipalityForPoint(x, y) {
+                for (let municipality of this.municipalities) {
+                    for (let path of municipality.paths) {
                         if (this.ctx.isPointInPath(path.storedPaths['map-' + this.$store.state.ui.canvasWidth], x, y)) {
-                            return region;
+                            return municipality;
                         }
                     }
                 }
@@ -124,9 +116,6 @@
             },
             clear() {
                 this.ctx.clearRect(0, 0, this.width, this.height);
-            },
-            openMapTools() {
-                this.$store.commit('ui/updateProperty', {key: 'mapToolsPopup', value: true});
             }
         },
         watch: {
