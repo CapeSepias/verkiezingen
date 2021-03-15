@@ -1,0 +1,16 @@
+@mixin ipad-pro-portrait {
+    @media only screen
+    and (max-height: 1366px)
+    and (orientation: portrait) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media only screen
+    and (max-width: 767px) {
+        @content;
+    }
+}
+
+

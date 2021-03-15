@@ -1,0 +1,28 @@
+.close-button {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    border-radius: 3px;
+
+    &:before, &:after {
+        position: absolute;
+        left: 11px;
+        top: 2px;
+        content: ' ';
+        height: 18px;
+        width: 2px;
+        background-color: #000;
+    }
+
+    &:before {
+        transform: rotate(45deg);
+    }
+
+    &:after {
+        transform: rotate(-45deg);
+    }
+}

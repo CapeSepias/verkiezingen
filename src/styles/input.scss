@@ -1,0 +1,12 @@
+input, select {
+    border: transparent;
+    background: #ddd;
+    padding: 4px 10px;
+    font-family: inherit;
+    outline: none;
+    height: 32px;
+}
+
+select {
+    background: $green;
+}

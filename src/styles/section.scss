@@ -1,0 +1,15 @@
+.section {
+
+    .section__head {
+        background: $active-color;
+        color: #fff;
+        padding: 8px;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .section__body {
+        background: $grey-1;
+        padding: 8px;
+    }
+}

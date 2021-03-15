@@ -1,0 +1,36 @@
+.button {
+    border: 1px solid #ddd;
+    cursor: pointer;
+    padding: 10px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #eee;
+    }
+
+    &.button--alert {
+        background: red;
+        color: #fff;
+
+        &:hover {
+            background: #91031b;
+        }
+    }
+
+    &.button--trigger {
+        background: $grey-1;
+
+        &:hover {
+            background: #000;
+            color: #fff;
+        }
+    }
+
+    &.button--inactive {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
