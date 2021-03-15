@@ -2,11 +2,10 @@ import _base from './_base-module';
 
 
 const state = {
-    // number of days
-    resolution: 7,
-    timelineContainerIsMeasured: false,
-    timelineContainer: 0,
-    isDragging: false
+    colorMode: 'regular',
+    canvasWidth: 0,
+    canvasHeight: 0,
+    zoom: 0
 };
 
 const getters = {

@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 import ui from './modules/ui';
 import parties from './modules/parties';
+import municipalities from './modules/municipalities';
 
 
 const state = {
@@ -20,7 +21,7 @@ const store = new Vuex.Store({
     mutations,
     actions: {},
     modules: {
-        ui, parties
+        ui, parties, municipalities
     }
 
 });

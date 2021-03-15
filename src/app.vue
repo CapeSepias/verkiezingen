@@ -1,5 +1,6 @@
 <script>
     import parties from '@/data/parties';
+    import municipalities from '@/data/municipalities';
 
     export default {
         name: 'app',
@@ -13,7 +14,12 @@
         },
         methods: {
             init() {
+                let ms = municipalities.map(m => {
+                    m.id = municipalities.indexOf(m) + 1;
+                    return m
+                });
                 this.$store.commit('parties/init', parties);
+                this.$store.commit('municipalities/init', ms);
                 this.ready = true;
             }
         },

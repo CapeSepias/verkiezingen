@@ -22,6 +22,12 @@
     @import '@/styles/variables.scss';
 
     .Main {
+        display: flex;
+        height: 100%;
 
+        .Map {
+            width: 50%;
+            height: 100%;
+        }
     }
 </style>
