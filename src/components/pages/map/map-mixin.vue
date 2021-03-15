@@ -117,14 +117,6 @@
             clear() {
                 this.ctx.clearRect(0, 0, this.width, this.height);
             }
-        },
-        watch: {
-            // view: {
-            //     handler: function() {
-            //         this.draw();
-            //     },
-            //     deep: true
-            // }
         }
     }
 </script>

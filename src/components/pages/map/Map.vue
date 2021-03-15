@@ -17,6 +17,9 @@
         computed: {
             municipalities() {
                 return this.$store.state.municipalities.all;
+            },
+            currentParty() {
+                return this.$store.state.parties.current;
             }
         },
         methods: {
@@ -31,11 +34,19 @@
                     zoom: this.$store.state.ui.zoom,
                     fill: true
                 };
-                canvasTools.draw(this.ctx, this.municipalities, settings);
+                canvasTools.draw(this.ctx, this.municipalities, settings, this.currentParty);
             }
         },
         mounted() {
             this.init();
+        },
+        watch: {
+            currentParty: {
+                handler: function() {
+                    this.draw();
+                },
+                deep: true
+            }
         }
     }
 </script>
@@ -55,5 +66,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        background: #F7E9D0;
     }
 </style>

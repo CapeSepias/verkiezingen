@@ -23,8 +23,11 @@
             result() {
                 return this.municipality.results[2017].votes.find(v => v.party_id === this.party.id);
             },
+            percentage() {
+                return Math.round(100 * (this.result.votes / this.municipality.results[2017].validVotes));
+            },
             width() {
-                return 3 * 100 * (this.result.votes / this.municipality.results[2017].validVotes);
+                return this.percentage;
             }
         },
         methods: {
@@ -50,6 +53,9 @@
                 :style="{'background': party.color, width: width + '%'}"
                 class="DetailParty__score"></div>
         </div>
+        <div class="DetailParty__percentage">
+            {{percentage}}%
+        </div>
     </div>
 </template>
 
@@ -59,7 +65,8 @@
 
     .DetailParty {
         display: flex;
-        margin-bottom: 6px;
+        align-items: center;
+        margin-bottom: 8px;
         opacity: 0.5;
         transition: all 0.4s ease;
         cursor: pointer;
@@ -75,13 +82,14 @@
             background: #fff;
             border-radius: 6px;
             overflow: hidden;
+            margin-right: 12px;
 
             .DetailParty__score {
                 position: absolute;
                 left: 0;
                 top: 0;
                 height: 100%;
-                background: #000;
+                background: red!important;
                 transition: all 0.2s ease;
             }
 

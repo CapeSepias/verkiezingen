@@ -12,6 +12,12 @@
         computed: {
             currentMunicipality() {
                 return this.$store.state.municipalities.current;
+            },
+            currentParty() {
+                return this.$store.state.parties.current;
+            },
+            title() {
+                return this.currentParty ? ('Het Nederland van ' + this.currentParty.title) : 'Verkiezingen 2021';
             }
         },
         methods: {}
@@ -21,10 +27,15 @@
 
 <template>
     <div class="Main">
-        <Map/>
-        <Detail
-            v-if="currentMunicipality"
-            :municipality="currentMunicipality"/>
+        <div class="Main__top">
+            {{title}}
+        </div>
+        <div class="Main__bottom">
+            <Map/>
+            <Detail
+                    v-if="currentMunicipality"
+                    :municipality="currentMunicipality"/>
+        </div>
     </div>
 </template>
 
@@ -33,17 +44,30 @@
     @import '@/styles/variables.scss';
 
     .Main {
-        display: flex;
         height: 100%;
 
-        .Map {
-            width: 50%;
-            height: 100%;
+        .Main__top {
+            height: 40px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 20px;
         }
 
-        .Detail {
-            width: 50%;
-            height: 100%;
+        .Main__bottom {
+            display: flex;
+            height: calc(100% - 40px);
+
+            .Map {
+                width: 50%;
+                height: 100%;
+            }
+
+            .Detail {
+                width: 50%;
+                height: 100%;
+            }
         }
     }
 </style>
