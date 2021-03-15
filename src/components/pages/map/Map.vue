@@ -52,5 +52,8 @@
     @import '@/styles/variables.scss';
 
     .Map {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
