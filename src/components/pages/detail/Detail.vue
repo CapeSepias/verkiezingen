@@ -23,6 +23,7 @@
             {{municipality.title}}
         </div>
         <DetailParties
+            v-if="municipality.results[2017]"
             :municipality="municipality"/>
     </div>
 </template>

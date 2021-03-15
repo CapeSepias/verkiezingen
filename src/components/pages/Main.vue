@@ -1,6 +1,6 @@
 <script>
     import Map from "./map/Map";
-    import Detail from "./map/detail/Detail";
+    import Detail from "./detail/Detail";
 
     export default {
         name: 'Main',

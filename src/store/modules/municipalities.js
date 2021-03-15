@@ -48,6 +48,9 @@ const mutations = {
     },
     reset(state) {
         return _base.mutations.reset(state);
+    },
+    updatePropertyOfItem(state, payload) {
+        _base.mutations.updatePropertyOfItem(state, payload.item, payload.property, payload.value);
     }
 };
 

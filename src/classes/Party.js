@@ -2,10 +2,12 @@ class Party {
     constructor({
         id = null,
         title = '',
-        color = '#ddd'
+        colname = '',
+        color = '#000'
     }) {
         this.id = id;
         this.title = title;
+        this.colname = colname;
         this.color = color;
     }
 }

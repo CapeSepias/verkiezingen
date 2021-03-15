@@ -19,6 +19,12 @@
         computed: {
             isCurrent() {
                 return this.$store.state.parties.current === this.party;
+            },
+            result() {
+                return this.municipality.results[2017].votes.find(v => v.party_id === this.party.id);
+            },
+            width() {
+                return 3 * 100 * (this.result.votes / this.municipality.results[2017].validVotes);
             }
         },
         methods: {
@@ -40,7 +46,8 @@
         </div>
         <div class="DetailParty__score-container">
             <div
-                :style="{'background': party.color}"
+                v-if="result"
+                :style="{'background': party.color, width: width + '%'}"
                 class="DetailParty__score"></div>
         </div>
     </div>
@@ -58,7 +65,7 @@
         cursor: pointer;
 
         .DetailParty__party {
-            width: 100px;
+            width: 80px;
         }
 
         .DetailParty__score-container {
@@ -73,8 +80,9 @@
                 position: absolute;
                 left: 0;
                 top: 0;
-                width: 50%;
                 height: 100%;
+                background: #000;
+                transition: all 0.2s ease;
             }
 
         }
