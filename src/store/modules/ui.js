@@ -5,7 +5,9 @@ const state = {
     colorMode: 'regular',
     canvasWidth: 0,
     canvasHeight: 0,
-    zoom: 0
+    zoom: 0,
+    searchValue: '',
+    hoverValue: ''
 };
 
 const getters = {

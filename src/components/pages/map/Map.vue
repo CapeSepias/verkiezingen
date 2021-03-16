@@ -66,6 +66,5 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #F7E9D0;
     }
 </style>

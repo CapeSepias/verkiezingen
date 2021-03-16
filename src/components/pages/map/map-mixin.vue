@@ -89,7 +89,9 @@
                     y = event.offsetY;
                     municipality = this.getMunicipalityForPoint(x, y);
                     if (municipality) {
-                        this.$store.commit('municipalities/setCurrent', municipality)
+                        this.$store.commit('municipalities/setCurrent', municipality);
+                    } else {
+                        this.$store.commit('municipalities/setCurrent', null);
                     }
                 }, false);
             },
@@ -100,7 +102,9 @@
                     y = event.offsetY;
                     municipality = this.getMunicipalityForPoint(x, y);
                     if (municipality) {
-                        console.log(municipality.title);
+                        this.$store.commit('ui/updateProperty', {key: 'hoverValue', value: municipality.title});
+                    } else {
+                        this.$store.commit('ui/updateProperty', {key: 'hoverValue', value: ''});
                     }
                 }, false);
             },

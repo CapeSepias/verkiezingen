@@ -72,7 +72,7 @@
         cursor: pointer;
 
         .DetailParty__party {
-            width: 80px;
+            width: 100px;
         }
 
         .DetailParty__score-container {

@@ -1,10 +1,14 @@
 <script>
     import Map from "./map/Map";
     import Detail from "./detail/Detail";
+    import HeaderBar from "./HeaderBar";
+    import Search from "./search/Search";
 
     export default {
         name: 'Main',
         components: {
+            Search,
+            HeaderBar,
             Detail,
             Map
         },
@@ -12,12 +16,6 @@
         computed: {
             currentMunicipality() {
                 return this.$store.state.municipalities.current;
-            },
-            currentParty() {
-                return this.$store.state.parties.current;
-            },
-            title() {
-                return this.currentParty ? ('Het Nederland van ' + this.currentParty.title) : 'Verkiezingen 2021';
             }
         },
         methods: {}
@@ -27,11 +25,12 @@
 
 <template>
     <div class="Main">
-        <div class="Main__top">
-            {{title}}
-        </div>
+        <HeaderBar/>
         <div class="Main__bottom">
-            <Map/>
+            <div class="map-container">
+                <Search/>
+                <Map/>
+            </div>
             <Detail
                     v-if="currentMunicipality"
                     :municipality="currentMunicipality"/>
@@ -46,22 +45,27 @@
     .Main {
         height: 100%;
 
-        .Main__top {
-            height: 40px;
-            padding: 8px;
-            display: flex;
-            align-items: center;
-            font-weight: 700;
-            font-size: 20px;
+        .HeaderBar {
+            height: 60px;
         }
 
         .Main__bottom {
             display: flex;
-            height: calc(100% - 40px);
+            height: calc(100% - 60px);
 
-            .Map {
+            .map-container {
                 width: 50%;
                 height: 100%;
+                background: #F7E9D0;
+
+                .Search {
+                    height: 48px;
+                    padding: 8px;
+                }
+
+                .Map {
+                    height: calc(100% - 48px);
+                }
             }
 
             .Detail {
