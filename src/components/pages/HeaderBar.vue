@@ -4,11 +4,35 @@
         components: {},
         props: {},
         computed: {
-            currentParty() {
-                return this.$store.state.parties.current;
+            municipalities() {
+                return this.$store.state.municipalities.all;
+            },
+            activeParties() {
+                return this.$store.state.parties.active;
+            },
+            activePartiesString() {
+                return this.activeParties.map(p => p.title).join(' + ');
             },
             title() {
-                return this.currentParty ? ('Verkiezingen 2021. Kaart van ' + this.currentParty.title) : 'Verkiezingen 2021. Kaart van Nederland';
+                return this.activeParties.length > 0 ? ('Verkiezingen 2021. Kaart van ' + this.activePartiesString) : 'Verkiezingen 2021. Kaart van Nederland';
+            },
+            percentage() {
+                let votes, voters;
+                votes = 0;
+                voters = 0;
+                for (let municipality of this.municipalities) {
+                    if (municipality.results) {
+                        let results = municipality.results[2017].votes;
+                        for (let party of this.activeParties) {
+                            let votesForParty = results.find(v => v.party_id === party.id);
+                            if (votesForParty) {
+                                votes += votesForParty.votes;
+                            }
+                        }
+                        voters += municipality.results[2017].validVotes
+                    }
+                }
+                return Math.round(100 * (votes / voters));
             }
         },
         methods: {}
@@ -19,7 +43,7 @@
 <template>
     <div class="HeaderBar">
         <img src="assets/img/vote.svg"/>
-        {{title}}
+        {{title}} ({{percentage}}%)
     </div>
 </template>
 

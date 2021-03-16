@@ -7,7 +7,7 @@
         components: {DetailParty},
         props: {
             municipality: {
-                type: Municipality,
+                type: Municipality | null,
                 required: true
             }
         },

@@ -5,7 +5,7 @@ const Model = Party;
 
 const state = {
     all: [],
-    current: null
+    active: []
 };
 
 const getters = {
@@ -28,26 +28,13 @@ const mutations = {
     init(state, set) {
         return _base.mutations.init(state, set, Model);
     },
-    setCurrent(state, item) {
-        return _base.mutations.setCurrent(state, item)
-    },
-    unsetCurrent(state) {
-        return _base.mutations.unsetCurrent(state)
-    },
-    create(state, item) {
-        return _base.mutations.create(state, item, Model);
-    },
-    update(state, item) {
-        return _base.mutations.update(state, item, Model);
-    },
-    delete(state, item) {
-        return _base.mutations.delete(state, item);
-    },
-    updateProperty(state, payload) {
-        return _base.mutations.updateProperty(state, payload);
-    },
-    reset(state) {
-        return _base.mutations.reset(state);
+    toggle(state, item) {
+        let index = state.active.indexOf(item);
+        if (index === -1) {
+            state.active.push(item);
+        } else {
+            state.active.splice(index, 1);
+        }
     }
 };
 

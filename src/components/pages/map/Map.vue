@@ -18,8 +18,8 @@
             municipalities() {
                 return this.$store.state.municipalities.all;
             },
-            currentParty() {
-                return this.$store.state.parties.current;
+            activeParties() {
+                return this.$store.state.parties.active;
             }
         },
         methods: {
@@ -34,14 +34,14 @@
                     zoom: this.$store.state.ui.zoom,
                     fill: true
                 };
-                canvasTools.draw(this.ctx, this.municipalities, settings, this.currentParty);
+                canvasTools.draw(this.ctx, this.municipalities, settings, this.activeParties);
             }
         },
         mounted() {
             this.init();
         },
         watch: {
-            currentParty: {
+            activeParties: {
                 handler: function() {
                     this.draw();
                 },

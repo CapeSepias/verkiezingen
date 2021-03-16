@@ -32,8 +32,7 @@
                 <Map/>
             </div>
             <Detail
-                    v-if="currentMunicipality"
-                    :municipality="currentMunicipality"/>
+                :municipality="currentMunicipality"/>
         </div>
     </div>
 </template>

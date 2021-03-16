@@ -7,6 +7,7 @@ class Municipality {
         identifier = '',
         population = 0,
         paths = [],
+        fusions = [],
         results = null
     }) {
         this.id = id;
@@ -14,6 +15,7 @@ class Municipality {
         this.identifier = identifier;
         this.population = population;
         this.paths = paths.map(path => new Path(path));
+        this.fusions = fusions;
         this.results = results;
     }
 }

@@ -8,7 +8,7 @@
         components: {},
         props: {
             municipality: {
-                type: Municipality,
+                type: Municipality | null,
                 required: true
             },
             party: {
@@ -17,11 +17,11 @@
             }
         },
         computed: {
-            isCurrent() {
-                return this.$store.state.parties.current === this.party;
+            isActive() {
+                return this.$store.state.parties.active.indexOf(this.party) > -1;
             },
             result() {
-                return this.municipality.results[2017].votes.find(v => v.party_id === this.party.id);
+                return this.municipality ? this.municipality.results[2017].votes.find(v => v.party_id === this.party.id) : null;
             },
             percentage() {
                 return Math.round(100 * (this.result.votes / this.municipality.results[2017].validVotes));
@@ -32,7 +32,7 @@
         },
         methods: {
             selectParty() {
-                this.$store.commit('parties/setCurrent', this.party);
+                this.$store.commit('parties/toggle', this.party);
             }
         }
     }
@@ -42,18 +42,23 @@
 <template>
     <div
         @click="selectParty()"
-        :class="{'DetailParty--current': isCurrent}"
+        :class="{'DetailParty--active': isActive}"
         class="DetailParty">
+        <div class="DetailParty__vote"><div class="DetailParty__vote-inner"></div></div>
         <div class="DetailParty__party">
             {{party.title}}
         </div>
-        <div class="DetailParty__score-container">
+        <div
+            v-if="municipality"
+            class="DetailParty__score-container">
             <div
                 v-if="result"
-                :style="{'background': party.color, width: width + '%'}"
+                :style="{width: width + '%'}"
                 class="DetailParty__score"></div>
         </div>
-        <div class="DetailParty__percentage">
+        <div
+            v-if="municipality"
+            class="DetailParty__percentage">
             {{percentage}}%
         </div>
     </div>
@@ -67,9 +72,40 @@
         display: flex;
         align-items: center;
         margin-bottom: 8px;
-        opacity: 0.5;
         transition: all 0.4s ease;
         cursor: pointer;
+
+        .DetailParty__vote {
+            width: 18px;
+            height: 18px;
+            background: #000;
+            position: relative;
+            margin-right: 6px;
+            z-index: 0;
+
+            .DetailParty__vote-inner {
+                position: absolute;
+                width: calc(100% - 4px);
+                height: calc(100% - 4px);
+                border-radius: 50%;
+                background: #fff;
+                z-index: 1;
+                top: 2px;
+                left: 2px;
+
+                &:after {
+                    content: '';
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    width: 6px;
+                    height: 6px;
+                    border-radius: 50%;
+                    background: transparent;
+                }
+            }
+        }
 
         .DetailParty__party {
             width: 100px;
@@ -89,14 +125,40 @@
                 left: 0;
                 top: 0;
                 height: 100%;
-                background: red!important;
+                background: #000;
                 transition: all 0.2s ease;
             }
 
         }
 
-        &.DetailParty--current {
-            opacity: 1;
+        &.DetailParty--active {
+
+            .DetailParty__vote {
+
+                .DetailParty__vote-inner {
+                    background: red;
+                }
+            }
+
+            .DetailParty__score-container {
+
+                .DetailParty__score {
+                    background: red;
+                }
+            }
+        }
+
+        &:hover {
+
+            .DetailParty__vote {
+
+                .DetailParty__vote-inner {
+
+                    &:after {
+                        background: red;
+                    }
+                }
+            }
         }
     }
 </style>

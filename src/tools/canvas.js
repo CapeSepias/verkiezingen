@@ -1,24 +1,34 @@
-const draw = function(ctx, municipalities, settings, party) {
+const draw = function(ctx, municipalities, settings, parties) {
     ctx.lineWidth = 0.5;
     ctx.strokeStyle = '#aaa';
     for (let municipality of municipalities) {
-        drawMunicipality(ctx, municipality, settings, party);
+        drawMunicipality(ctx, municipality, settings, parties);
     }
 };
 
-const drawMunicipality = function(ctx, municipality, settings, party) {
+const drawMunicipality = function(ctx, municipality, settings, parties) {
     // todo add color
-    let color, results, alpha;
+    let color, results, alpha, votes, percentage;
+    votes = 0;
 
-    results = (party && municipality.results) ? municipality.results[2017].votes.find(v => v.party_id === party.id) : null;
-    if (results) {
-        //color = party.color;
+
+    if (municipality.results) {
+        results = municipality.results[2017].votes;
+        for (let party of parties) {
+            let votesForParty = results.find(v => v.party_id === party.id);
+            if (votesForParty) {
+                votes += votesForParty.votes;
+            }
+        }
+        percentage = votes / municipality.results[2017].validVotes;
         color = 'red';
-        alpha = 2 * results.votes / municipality.results[2017].validVotes;
+        alpha = 1 * percentage;
     } else {
-        color = '#fff';
+        color = '#555';
         alpha = 1;
     }
+
+
 
 
     for (let path of municipality.paths) {

@@ -7,7 +7,7 @@
         components: {DetailParties},
         props: {
             municipality: {
-                type: Municipality,
+                type: Municipality | null,
                 required: true
             }
         },
@@ -32,13 +32,14 @@
 <template>
     <div class="Detail">
         <div class="Detail__title">
-            {{municipality.title}}
+            {{municipality ? municipality.title : ''}}
         </div>
         <DetailParties
-            v-if="municipality.results[2017]"
             :municipality="municipality"/>
 
-        <div class="Detail__body">
+        <div
+            v-if="municipality"
+            class="Detail__body">
             <div class="Detail__row">
                 <div class="Detail__label">
                     Kiesgerechtigden
@@ -87,6 +88,7 @@
         .Detail__title {
             font-size: 24px;
             margin-bottom: 12px;
+            height: 36px;
         }
 
         .Detail__body {

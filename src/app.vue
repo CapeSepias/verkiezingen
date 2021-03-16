@@ -1,17 +1,22 @@
 <script>
     import parties from '@/data/parties';
     import municipalities from '@/data/municipalities';
+    import fusions from '@/data/fusions';
     import * as d3 from 'd3';
 
     export default {
         name: 'app',
         components: {},
         props: {},
-        computed: {},
         data() {
             return {
                 ready: false
             }
+        },
+        computed: {
+            municipalities() {
+                return this.$store.state.municipalities.all;
+            },
         },
         methods: {
             init() {
@@ -19,42 +24,94 @@
                     m.id = municipalities.indexOf(m) + 1;
                     return m
                 });
+                for (let fusion of fusions) {
+                    let municipality = ms.find(m => m.title === fusion.current);
+                    if (municipality) {
+                        municipality.fusions = fusion.previous;
+                    }
+                }
                 this.$store.commit('parties/init', parties);
                 this.$store.commit('municipalities/init', ms);
                 this.ready = true;
+            },
+            addData(municipality, row) {
+                let results = {
+                    2017: {
+                        votes: [],
+                        voters: Number(row.Kiesgerechtigden),
+                        attendance: Number(row.Opkomst),
+                        invalidVotes: Number(row.OngeldigeStemmen),
+                        validVotes: Number(row.GeldigeStemmen),
+                        blankVotes: Number(row.BlancoStemmen)
+                    }
+                };
+                for (let party of this.$store.state.parties.all) {
+                    if (row[party.colname]) {
+                        results[2017].votes.push({
+                            party_id: party.id,
+                            votes: Number(row[party.colname])
+                        })
+                    }
+                }
+                this.$store.commit('municipalities/updatePropertyOfItem', {item: municipality, property: 'results', value: results});
+            },
+            addMultipleData(municipality, rows) {
+                let results = {
+                    2017: {
+                        votes: [],
+                        voters: 0,
+                        attendance: 0,
+                        invalidVotes: 0,
+                        validVotes: 0,
+                        blankVotes: 0
+                    }
+                };
+                for (let row of rows) {
+                    results[2017].voters +=  Number(row.Kiesgerechtigden);
+                    results[2017].attendance +=  Number(row.Opkomst);
+                    results[2017].invalidVotes +=  Number(row.OngeldigeStemmen);
+                    results[2017].validVotes +=  Number(row.GeldigeStemmen);
+                    results[2017].blankVotes +=  Number(row.BlancoStemmen);
+                }
+
+
+                for (let party of this.$store.state.parties.all) {
+                    for (let row of rows) {
+                        if (row[party.colname]) {
+                            let item = results[2017].votes.find(i => i.party_id === party.id);
+                            if (!item) {
+                                results[2017].votes.push({
+                                    party_id: party.id,
+                                    votes: Number(row[party.colname])
+                                })
+                            } else {
+                                item.votes += Number(row[party.colname]);
+                            }
+                        }
+                    }
+                }
+                this.$store.commit('municipalities/updatePropertyOfItem', {item: municipality, property: 'results', value: results});
             },
             load() {
                 const url = "data/2017.csv";
 
                 d3.csv(url)
                     .then((data) => {
-                        for (let item of data) {
-                            let code, municipality, results;
-                            code = 'GM' + item.RegioCode.substring(1);
-                            municipality = this.$store.getters['municipalities/getItemByProperty']('identifier', code, true);
-                            if (municipality) {
-                                results = {
-                                    2017: {
-                                        votes: [],
-                                        voters: Number(item.Kiesgerechtigden),
-                                        attendance: Number(item.Opkomst),
-                                        invalidVotes: Number(item.OngeldigeStemmen),
-                                        validVotes: Number(item.GeldigeStemmen),
-                                        blankVotes: Number(item.BlancoStemmen)
-                                    }
-                                };
-                                for (let party of this.$store.state.parties.all) {
-                                    if (item[party.colname]) {
-                                        results[2017].votes.push({
-                                            party_id: party.id,
-                                            votes: Number(item[party.colname])
-                                        })
-                                    }
+                        for (let municipality of this.municipalities) {
+                            let item, items, results;
+                            if (municipality.fusions.length === 0) {
+                                item = data.find(row => {
+                                    let code = 'GM' + row.RegioCode.substring(1);
+                                    return municipality.identifier === code;
+                                });
+                                if (item) {
+                                    this.addData(municipality, item);
                                 }
-                                this.$store.commit('municipalities/updatePropertyOfItem', {item: municipality, property: 'results', value: results});
+                            } else {
+                                items = data.filter(row => municipality.fusions.indexOf(row.RegioNaam) > -1);
+                                this.addMultipleData(municipality, items);
                             }
                         }
-
                     })
                     .catch((error) => {
                         console.error(error);
