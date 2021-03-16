@@ -90,8 +90,10 @@
                     municipality = this.getMunicipalityForPoint(x, y);
                     if (municipality) {
                         this.$store.commit('municipalities/setCurrent', municipality);
+                        this.$store.commit('ui/updateProperty', {key: 'hoverValue', value: ''});
                     } else {
                         this.$store.commit('municipalities/setCurrent', null);
+                        this.$store.commit('ui/updateProperty', {key: 'hoverValue', value: ''});
                     }
                 }, false);
             },

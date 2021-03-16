@@ -3,10 +3,12 @@
     import Detail from "./detail/Detail";
     import HeaderBar from "./HeaderBar";
     import Search from "./search/Search";
+    import Parties from "./parties/Parties";
 
     export default {
         name: 'Main',
         components: {
+            Parties,
             Search,
             HeaderBar,
             Detail,
@@ -31,6 +33,7 @@
                 <Search/>
                 <Map/>
             </div>
+            <Parties/>
             <Detail
                 :municipality="currentMunicipality"/>
         </div>
@@ -51,6 +54,7 @@
         .Main__bottom {
             display: flex;
             height: calc(100% - 60px);
+            position: relative;
 
             .map-container {
                 width: 50%;
@@ -67,9 +71,49 @@
                 }
             }
 
+            .Parties {
+                display: none;
+            }
+
             .Detail {
                 width: 50%;
                 height: 100%;
+            }
+        }
+
+        @include mobile() {
+
+            .HeaderBar {
+                height: 120px;
+            }
+
+            .Main__bottom {
+                height: calc(100% - 120px);
+                display: block;
+
+                .map-container {
+                    width: 100%;
+                    height: calc(100% - 80px);
+                }
+
+                .Parties {
+                    display: flex;
+                    height: 80px;
+                }
+
+                .Detail {
+                    position: absolute;
+                    left: 100%;
+                    top: 48px;
+                    width: 100%;
+                    height: calc(100% - 48px);
+                    transition: all 0.3s ease;
+                    overflow: auto;
+
+                    &.Detail--active {
+                        left: 0;
+                    }
+                }
             }
         }
     }

@@ -139,11 +139,6 @@
 <template>
     <div class="app">
         <router-view v-if="ready"/>
-        <div class="credits">
-            <a href="https://twitter.com/innouveau" target="_blank">
-                @innouveau
-            </a>
-        </div>
     </div>
 </template>
 
@@ -153,17 +148,6 @@
     @import '@/styles/variables.scss';
 
     .app {
-
-        .credits {
-            position: fixed;
-            right: 10px;
-            bottom: 10px;
-
-            a {
-                color: #000;
-            }
-        }
-
 
         @include mobile() {
 

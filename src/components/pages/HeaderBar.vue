@@ -59,10 +59,17 @@
         display: flex;
         align-items: center;
         font-size: 24px;
+        line-height: 1.2;
+        overflow: hidden;
 
         img {
             height: 100%;
             margin-right: 12px;
+        }
+
+        @include mobile() {
+            font-size: 20px;
+            align-items: flex-start;
         }
     }
 </style>

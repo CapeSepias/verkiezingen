@@ -55,6 +55,11 @@
 <template>
     <div class="Map">
         <canvas :id="'canvas-' + id"></canvas>
+        <div class="credits">
+            <a href="https://twitter.com/innouveau" target="_blank">
+                @innouveau
+            </a>
+        </div>
     </div>
 </template>
 
@@ -66,5 +71,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        position: relative;
+
+        .credits {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+
+            a {
+                color: #000;
+            }
+        }
     }
 </style>

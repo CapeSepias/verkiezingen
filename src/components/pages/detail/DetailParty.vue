@@ -2,7 +2,6 @@
     import Municipality from "@/classes/Municipality";
     import Party from "@/classes/Party";
 
-
     export default {
         name: 'DetailParty',
         components: {},
@@ -17,8 +16,11 @@
             }
         },
         computed: {
+            activeParties() {
+                return this.$store.state.parties.active;
+            },
             isActive() {
-                return this.$store.state.parties.active.indexOf(this.party) > -1;
+                return this.activeParties.indexOf(this.party) > -1;
             },
             result() {
                 return this.municipality ? this.municipality.results[2017].votes.find(v => v.party_id === this.party.id) : null;
@@ -28,11 +30,36 @@
             },
             width() {
                 return this.percentage;
+            },
+            routePath() {
+                return window.location.href.split('?')[0];
+            },
+            url() {
+                return this.routePath + this.query;
+            },
+            query() {
+                if (this.activeParties.length > 0) {
+                    return '?p=' + this.activeParties.map(p => p.title.toLowerCase()).join(',')
+                } else {
+                    return '';
+                }
             }
         },
         methods: {
             selectParty() {
                 this.$store.commit('parties/toggle', this.party);
+            },
+            updateQuery() {
+                history.pushState(
+                    {},
+                    null,
+                    this.url
+                );
+            }
+        },
+        watch: {
+            query: function () {
+                this.updateQuery();
             }
         }
     }
