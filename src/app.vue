@@ -32,7 +32,6 @@
                 }
                 this.$store.commit('parties/init', parties);
                 this.$store.commit('municipalities/init', ms);
-                this.ready = true;
             },
             addData(municipality, row) {
                 let results = {
@@ -112,10 +111,21 @@
                                 this.addMultipleData(municipality, items);
                             }
                         }
+                        this.readQuery();
+                        this.ready = true;
                     })
                     .catch((error) => {
                         console.error(error);
                     });
+            },
+            readQuery() {
+                if (this.$route.query.p) {
+                    let partieStrings = this.$route.query.p.split(',');
+                    for (let partieString of partieStrings) {
+                        let party = this.$store.getters['parties/getItemByProperty']('title', partieString, true);
+                        this.$store.commit('parties/toggle', party);
+                    }
+                }
             }
         },
         mounted() {
@@ -129,6 +139,11 @@
 <template>
     <div class="app">
         <router-view v-if="ready"/>
+        <div class="credits">
+            <a href="https://twitter.com/innouveau" target="_blank">
+                @innouveau
+            </a>
+        </div>
     </div>
 </template>
 
@@ -138,6 +153,16 @@
     @import '@/styles/variables.scss';
 
     .app {
+
+        .credits {
+            position: fixed;
+            right: 10px;
+            bottom: 10px;
+
+            a {
+                color: #000;
+            }
+        }
 
 
         @include mobile() {

@@ -13,8 +13,11 @@
             activePartiesString() {
                 return this.activeParties.map(p => p.title).join(' + ');
             },
+            year() {
+                return 2017;
+            },
             title() {
-                return this.activeParties.length > 0 ? ('Verkiezingen 2021. Kaart van ' + this.activePartiesString) : 'Verkiezingen 2021. Kaart van Nederland';
+                return this.activeParties.length > 0 ? ('Verkiezingen ' + this.year + '. Kaart van ' + this.activePartiesString) : 'Verkiezingen ' + this.year + '. Kaart van Nederland';
             },
             percentage() {
                 let votes, voters;

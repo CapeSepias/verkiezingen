@@ -94,10 +94,12 @@
         .Detail__body {
             margin-top: 16px;
             max-width: 300px;
+            font-size: 13px;
 
             .Detail__row {
                 display: flex;
                 align-items: center;
+                padding: 3px 0;
 
                 .Detail__label {
                     width: 50%;

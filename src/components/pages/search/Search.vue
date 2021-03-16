@@ -29,7 +29,7 @@
         <input
             :value="searchValue"
             @keyup="updateSearchValue"
-            placeholder="Zoek...">
+            placeholder="Zoek of klik op de kaart...">
         <div
             v-if="hoverValue.length > 0"
             class="hover-value">{{hoverValue}}</div>
