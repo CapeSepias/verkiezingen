@@ -43,7 +43,7 @@
                     };
                     this.addCreator();
                     this.addCustomText(this.string1, 480, 280);
-                    this.addCustomText(this.string2, 480, 450);
+                    this.addCustomText(this.string2, 480, 440);
                     canvasTools.draw(this.ctx, this.municipalities, settings, this.activeParties);
                     this.finish();
                 });

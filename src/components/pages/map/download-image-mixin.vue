@@ -53,20 +53,20 @@
             },
             addCustomText(text, x, y) {
                 let ctx = this.ctx;
-                ctx.font = 'bold ' + (160 * this.imageScale) + 'px Arial';
+                ctx.font = 'bold ' + (140 * this.imageScale) + 'px spacemono';
                 ctx.fillStyle = 'black';
                 ctx.textAlign = 'left';
                 ctx.fillText(text, x, y);
             },
             addCreator() {
                 let ctx = this.ctx;
-                ctx.font = (40 * this.imageScale) + 'px Arial';
+                ctx.font = (40 * this.imageScale) + 'px spacemono';
                 ctx.fillStyle = '#000';
                 ctx.fillText('Created by: @innouveau', (150 * this.imageScale),  (3330 * this.imageScale));
             },
             finish(name) {
                 return new Promise((resolve, reject) => {
-                    let fileName = 'verkiezingsposter';
+                    let fileName = 'verkiezingsposter-' + this.year + '.png';
                     this.downloadLink.setAttribute('download', fileName);
                     this.canvas.toBlob((blob) => {
                         let url = URL.createObjectURL(blob);

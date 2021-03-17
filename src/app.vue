@@ -149,11 +149,16 @@
     @import '@/styles/index.scss';
     @import '@/styles/variables.scss';
 
-    .app {
+    $font: 'spacemono';
 
-        @include mobile() {
+    @font-face {
+        font-family: $font;
+        src: url('fonts/space-mono/SpaceMono-Regular.ttf');
+    }
 
-
-        }
+    body {
+        font-family: $font;
+        font-size: 11px;
+        line-height: 1.4;
     }
 </style>
