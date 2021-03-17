@@ -30,15 +30,17 @@ const drawMunicipality = function(ctx, municipality, settings, parties) {
 
 
 
-
-    for (let path of municipality.paths) {
-        ctx.fillStyle = '#fff';
-        ctx.globalAlpha = 1;
-        drawPath(ctx, path, settings);
-        ctx.fillStyle = color;
-        ctx.globalAlpha = alpha;
-        drawPath(ctx, path, settings);
+    if (alpha > (1 / 150)) {
+        for (let path of municipality.paths) {
+            ctx.fillStyle = '#fff';
+            ctx.globalAlpha = 1;
+            drawPath(ctx, path, settings);
+            ctx.fillStyle = color;
+            ctx.globalAlpha = alpha;
+            drawPath(ctx, path, settings);
+        }
     }
+
 };
 
 const drawPath = function(ctx, path, settings) {

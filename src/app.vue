@@ -125,6 +125,8 @@
                         let party = this.$store.getters['parties/getItemByProperty']('title', partieString, true);
                         this.$store.commit('parties/toggle', party);
                     }
+                } else {
+                    this.$store.commit('parties/toggle', this.$store.state.parties.all[0]);
                 }
             }
         },
