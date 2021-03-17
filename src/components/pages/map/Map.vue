@@ -2,10 +2,11 @@
     import mapMixin from "./map-mixin";
     import canvasTools from '@/tools/canvas';
     import municipalities from "@/data/municipalities";
+    import PrintButton from "./PrintButton";
 
     export default {
         name: 'Map',
-        components: {},
+        components: {PrintButton},
         mixins: [mapMixin],
         data() {
             let id = Math.round(Math.random() * 1000000);
@@ -32,7 +33,6 @@
                     shiftX: 0,
                     shiftY: 0,
                     zoom: this.$store.state.ui.zoom,
-                    fill: true
                 };
                 canvasTools.draw(this.ctx, this.municipalities, settings, this.activeParties);
             }
@@ -55,6 +55,7 @@
 <template>
     <div class="Map">
         <canvas :id="'canvas-' + id"></canvas>
+        <PrintButton/>
         <div class="credits">
             <a href="https://twitter.com/innouveau" target="_blank">
                 @innouveau
@@ -81,6 +82,12 @@
             a {
                 color: #000;
             }
+        }
+
+        .PrintButton {
+            position: absolute;
+            left: 10px;
+            bottom: 10px;
         }
     }
 </style>

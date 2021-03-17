@@ -17,7 +17,7 @@
                 return 2017;
             },
             title() {
-                return this.activeParties.length > 0 ? ('Verkiezingen ' + this.year + '. Kaart van ' + this.activePartiesString) : 'Verkiezingen ' + this.year + '. Kaart van Nederland';
+                return this.activeParties.length > 0 ? ('Verkiezingskaart ' + this.year + '. Kaart van ' + this.activePartiesString) : 'Verkiezingskaart ' + this.year;
             },
             percentage() {
                 let votes, voters;

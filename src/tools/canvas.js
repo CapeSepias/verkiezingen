@@ -1,5 +1,5 @@
 const draw = function(ctx, municipalities, settings, parties) {
-    ctx.lineWidth = 0.5;
+    ctx.lineWidth = settings.border ? settings.border : 0.5;
     ctx.strokeStyle = '#aaa';
     for (let municipality of municipalities) {
         drawMunicipality(ctx, municipality, settings, parties);
@@ -47,17 +47,13 @@ const drawPath = function(ctx, path, settings) {
     if (!path.storedPaths[settings.key]) {
         path.create(settings);
     }
-    if (settings.fill) {
-        ctx.fill(path.storedPaths[settings.key]);
-    }
-    if (!settings.hideStroke) {
-        ctx.stroke(path.storedPaths[settings.key]);
-    }
+    ctx.fill(path.storedPaths[settings.key]);
+    ctx.stroke(path.storedPaths[settings.key]);
 };
 
 const addBackground = function(ctx, width, height) {
     ctx.rect(0, 0, width, height);
-    ctx.fillStyle = '#f5eedc';
+    ctx.fillStyle = '#F7E9D0';
     ctx.fill();
 };
 

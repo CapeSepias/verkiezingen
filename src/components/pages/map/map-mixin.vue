@@ -14,9 +14,6 @@
             height() {
                 return this.$store.state.ui.canvasHeight;
             },
-            regions() {
-                return this.$store.state[this.currentMap.module].all;
-            },
             canvas() {
                 return document.getElementById('canvas-' + this.id);
             },
