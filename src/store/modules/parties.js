@@ -35,6 +35,9 @@ const mutations = {
         } else {
             state.active.splice(index, 1);
         }
+    },
+    empty(state) {
+        state.active = [];
     }
 };
 

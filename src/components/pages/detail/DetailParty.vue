@@ -1,13 +1,13 @@
 <script>
-    import Municipality from "@/classes/Municipality";
+    import _Region from "@/classes/geo/_Region";
     import Party from "@/classes/Party";
 
     export default {
         name: 'DetailParty',
         components: {},
         props: {
-            municipality: {
-                type: Municipality | null,
+            region: {
+                type: _Region | null,
                 required: true
             },
             party: {
@@ -23,10 +23,10 @@
                 return this.activeParties.indexOf(this.party) > -1;
             },
             result() {
-                return this.municipality ? this.municipality.results[2017].votes.find(v => v.party_id === this.party.id) : null;
+                return this.region ? this.region.results[2017].votes.find(v => v.party_id === this.party.id) : null;
             },
             percentage() {
-                return Math.round(100 * (this.result.votes / this.municipality.results[2017].validVotes));
+                return Math.round(100 * (this.result.votes / this.region.results[2017].validVotes));
             },
             width() {
                 return this.percentage;
@@ -76,7 +76,7 @@
             {{party.title}}
         </div>
         <div
-            v-if="municipality"
+            v-if="region"
             class="DetailParty__score-container">
             <div
                 v-if="result"
@@ -84,7 +84,7 @@
                 class="DetailParty__score"></div>
         </div>
         <div
-            v-if="municipality"
+            v-if="region"
             class="DetailParty__percentage">
             {{percentage}}%
         </div>

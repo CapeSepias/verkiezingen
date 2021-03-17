@@ -3,10 +3,13 @@
     import canvasTools from '@/tools/canvas';
     import municipalities from "@/data/municipalities";
     import PrintButton from "./PrintButton";
+    import RegionTypeicker from "./region-type/regionTypePicker";
 
     export default {
         name: 'Map',
-        components: {PrintButton},
+        components: {
+            RegionTypeicker,
+            PrintButton},
         mixins: [mapMixin],
         data() {
             let id = Math.round(Math.random() * 1000000);
@@ -16,25 +19,43 @@
         },
         props: {},
         computed: {
+            currentRegionType() {
+                return this.$store.state.ui.currentRegionType;
+            },
             municipalities() {
                 return this.$store.state.municipalities.all;
             },
             activeParties() {
                 return this.$store.state.parties.active;
+            },
+            regions() {
+                return this.$store.getters['ui/regions'];
             }
         },
         methods: {
+            updatePaths(settings) {
+                for (let region of this.regions) {
+                    for (let path of region.paths) {
+                        if (!path.storedPaths[settings.key]) {
+                            path.create(settings);
+                        }
+                    }
+                }
+            },
             draw() {
                 this.clear();
-                let settings = {
-                    key: 'map-' + this.$store.state.ui.canvasWidth,
+                let settings, key;
+                key = 'map-' + this.$store.state.ui.canvasWidth;
+                settings = {
+                    key: key,
                     width: this.$store.state.ui.canvasWidth,
                     height: this.$store.state.ui.canvasHeight,
                     shiftX: 0,
                     shiftY: 0,
                     zoom: this.$store.state.ui.zoom,
                 };
-                canvasTools.draw(this.ctx, this.municipalities, settings, this.activeParties);
+                this.updatePaths(settings);
+                canvasTools.draw(this.ctx, this.regions, settings, this.activeParties);
             }
         },
         mounted() {
@@ -46,6 +67,12 @@
                     this.draw();
                 },
                 deep: true
+            },
+            currentRegionType: {
+                handler: function() {
+                    this.draw();
+                },
+                deep: false
             }
         }
     }
@@ -55,6 +82,7 @@
 <template>
     <div class="Map">
         <canvas :id="'canvas-' + id"></canvas>
+        <RegionTypeicker/>
         <PrintButton/>
         <div class="credits">
             <a href="https://twitter.com/innouveau" target="_blank">
@@ -73,6 +101,12 @@
         align-items: center;
         justify-content: center;
         position: relative;
+
+        .RegionTypeicker {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+        }
 
         .credits {
             position: absolute;

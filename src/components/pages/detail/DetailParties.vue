@@ -1,13 +1,13 @@
 <script>
-    import Municipality from "@/classes/Municipality";
+    import _Region from "@/classes/geo/_Region";
     import DetailParty from "./DetailParty";
 
     export default {
         name: 'DetailParties',
         components: {DetailParty},
         props: {
-            municipality: {
-                type: Municipality | null,
+            region: {
+                type: _Region | null,
                 required: true
             }
         },
@@ -26,7 +26,7 @@
         <DetailParty
             v-for="party in parties"
             :party="party"
-            :municipality="municipality"/>
+            :region="region"/>
     </div>
 </template>
 

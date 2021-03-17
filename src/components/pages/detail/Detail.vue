@@ -1,13 +1,13 @@
 <script>
-    import Municipality from "@/classes/Municipality";
     import DetailParties from "./DetailParties";
+    import _Region from "@/classes/geo/_Region";
 
     export default {
         name: 'Detail',
         components: {DetailParties},
         props: {
-            municipality: {
-                type: Municipality | null,
+            region: {
+                type: _Region | null,
                 required: true
             }
         },
@@ -19,11 +19,11 @@
                 return this.parties.map(p => p.title).join( ' + ');
             },
             percentageAttendance() {
-                return Math.round(100 * (this.municipality.results[2017].attendance / this.municipality.results[2017].voters));
+                return Math.round(100 * (this.region.results[2017].attendance / this.region.results[2017].voters));
             },
             percentageOfParties() {
                 let results, votes;
-                results = this.municipality.results[2017].votes;
+                results = this.region.results[2017].votes;
                 votes = 0;
                 for (let party of this.parties) {
                     let votesForParty = results.find(v => v.party_id === party.id);
@@ -31,7 +31,7 @@
                         votes += votesForParty.votes;
                     }
                 }
-                return Math.round(100 * votes / this.municipality.results[2017].validVotes);
+                return Math.round(100 * votes / this.region.results[2017].validVotes);
             }
         },
         methods: {
@@ -44,6 +44,19 @@
             },
             close() {
                 this.$store.commit('municipalities/setCurrent', null);
+            },
+            updateResults() {
+                if (this.region && !this.region.results) {
+                    this.region.createResults(2017);
+                }
+            }
+        },
+        watch: {
+            region: {
+                handler: function() {
+                    this.updateResults();
+                },
+                deep: false
             }
         }
     }
@@ -52,16 +65,16 @@
 
 <template>
     <div
-        :class="{'Detail--active': municipality}"
+        :class="{'Detail--active': region}"
         class="Detail">
         <div class="Detail__title">
-            {{municipality ? municipality.title : ''}}
+            {{region ? region.title : ''}}
         </div>
         <DetailParties
-            :municipality="municipality"/>
+            :region="region"/>
 
         <div
-            v-if="municipality"
+            v-if="region"
             class="Detail__body">
             <div class="Detail__section">
                 <div class="Detail__row">
@@ -69,7 +82,7 @@
                         Kiesgerechtigden
                     </div>
                     <div class="Detail__label">
-                        {{styleNumber(municipality.results[2017].voters)}}
+                        {{styleNumber(region.results[2017].voters)}}
                     </div>
                 </div>
                 <div class="Detail__row">
@@ -77,7 +90,7 @@
                         Opkomst
                     </div>
                     <div class="Detail__label">
-                        {{styleNumber(municipality.results[2017].attendance)}} ({{percentageAttendance}}%)
+                        {{styleNumber(region.results[2017].attendance)}} ({{percentageAttendance}}%)
                     </div>
                 </div>
                 <div class="Detail__row">
@@ -85,7 +98,7 @@
                         Ongeldige stemmen
                     </div>
                     <div class="Detail__label">
-                        {{styleNumber(municipality.results[2017].invalidVotes)}}
+                        {{styleNumber(region.results[2017].invalidVotes)}}
                     </div>
                 </div>
                 <div class="Detail__row">
@@ -93,7 +106,7 @@
                         Blanco Stemmen
                     </div>
                     <div class="Detail__label">
-                        {{styleNumber(municipality.results[2017].blankVotes)}}
+                        {{styleNumber(region.results[2017].blankVotes)}}
                     </div>
                 </div>
             </div>

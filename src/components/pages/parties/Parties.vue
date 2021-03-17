@@ -22,7 +22,7 @@
         <DetailParty
             v-for="party in parties"
             :party="party"
-            :municipality="null"/>
+            :region="null"/>
     </div>
 </template>
 

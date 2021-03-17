@@ -1,5 +1,5 @@
 import _base from './_base-module';
-import Municipality from '@/classes/Municipality';
+import Municipality from '@/classes/geo/Municipality';
 
 const Model = Municipality;
 

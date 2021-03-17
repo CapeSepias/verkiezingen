@@ -108,9 +108,10 @@
                 }, false);
             },
             getMunicipalityForPoint(x, y) {
+                let key = 'map-' + this.$store.state.ui.canvasWidth;
                 for (let municipality of this.municipalities) {
                     for (let path of municipality.paths) {
-                        if (this.ctx.isPointInPath(path.storedPaths['map-' + this.$store.state.ui.canvasWidth], x, y)) {
+                        if (this.ctx.isPointInPath(path.storedPaths[key], x, y)) {
                             return municipality;
                         }
                     }

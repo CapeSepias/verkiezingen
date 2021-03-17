@@ -1,5 +1,5 @@
 <script>
-    import Municipality from "@/classes/Municipality";
+    import Municipality from "@/classes/geo/Municipality";
 
     export default {
         name: 'SearchResult',

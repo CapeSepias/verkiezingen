@@ -1,52 +1,28 @@
-const draw = function(ctx, municipalities, settings, parties) {
+const draw = function(ctx, regions, settings, parties) {
     ctx.lineWidth = settings.border ? settings.border : 0.5;
     ctx.strokeStyle = '#aaa';
-    for (let municipality of municipalities) {
-        drawMunicipality(ctx, municipality, settings, parties);
+    for (let region of regions) {
+        drawRegion(ctx, region, settings, parties);
     }
 };
 
-const drawMunicipality = function(ctx, municipality, settings, parties) {
-    // todo add color
-    let color, results, alpha, votes, percentage;
-    votes = 0;
-
-
-    if (municipality.results) {
-        results = municipality.results[2017].votes;
-        for (let party of parties) {
-            let votesForParty = results.find(v => v.party_id === party.id);
-            if (votesForParty) {
-                votes += votesForParty.votes;
-            }
-        }
-        percentage = votes / municipality.results[2017].validVotes;
-        color = 'red';
-        alpha = 1 * percentage;
-    } else {
-        color = '#555';
-        alpha = 1;
-    }
-
-
-
+const drawRegion = function(ctx, region, settings, parties) {
+    let alpha, factor;
+    factor = 1;
+    alpha = factor * region.getPercentageForParties(parties);
     if (alpha > (1 / 150)) {
-        for (let path of municipality.paths) {
+        for (let path of region.paths) {
             ctx.fillStyle = '#fff';
             ctx.globalAlpha = 1;
             drawPath(ctx, path, settings);
-            ctx.fillStyle = color;
+            ctx.fillStyle = 'red';
             ctx.globalAlpha = alpha;
             drawPath(ctx, path, settings);
         }
     }
-
 };
 
 const drawPath = function(ctx, path, settings) {
-    if (!path.storedPaths[settings.key]) {
-        path.create(settings);
-    }
     ctx.fill(path.storedPaths[settings.key]);
     ctx.stroke(path.storedPaths[settings.key]);
 };

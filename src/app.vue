@@ -1,6 +1,9 @@
 <script>
     import parties from '@/data/parties';
     import municipalities from '@/data/municipalities';
+    import safetyRegions from '@/data/safety-regions';
+    import provinces from '@/data/provinces';
+    import countries from '@/data/countries';
     import fusions from '@/data/fusions';
     import * as d3 from 'd3';
 
@@ -32,6 +35,9 @@
                 }
                 this.$store.commit('parties/init', parties);
                 this.$store.commit('municipalities/init', ms);
+                this.$store.commit('safetyRegions/init', safetyRegions);
+                this.$store.commit('provinces/init', provinces);
+                this.$store.commit('countries/init', countries);
             },
             addData(municipality, row) {
                 let results = {
@@ -111,6 +117,7 @@
                                 this.addMultipleData(municipality, items);
                             }
                         }
+
                         this.readQuery();
                         this.ready = true;
                     })
@@ -121,12 +128,13 @@
             readQuery() {
                 if (this.$route.query.p) {
                     let partieStrings = this.$route.query.p.split(',');
+                    this.$store.commit('parties/empty');
                     for (let partieString of partieStrings) {
                         let party = this.$store.getters['parties/getItemByProperty']('title', partieString, true);
                         this.$store.commit('parties/toggle', party);
                     }
                 } else {
-                    this.$store.commit('parties/toggle', this.$store.state.parties.all[0]);
+                    this.$store.commit('parties/toggle', this.$store.parties.all[0]);
                 }
             }
         },

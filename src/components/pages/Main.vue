@@ -16,8 +16,8 @@
         },
         props: {},
         computed: {
-            currentMunicipality() {
-                return this.$store.state.municipalities.current;
+            currentRegion() {
+                return this.$store.getters['ui/getRegionOfFocus'](this.$store.state.municipalities.current);
             }
         },
         methods: {}
@@ -35,7 +35,7 @@
             </div>
             <Parties/>
             <Detail
-                :municipality="currentMunicipality"/>
+                :region="currentRegion"/>
         </div>
     </div>
 </template>

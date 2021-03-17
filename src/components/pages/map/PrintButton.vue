@@ -8,9 +8,6 @@
         props: {},
         mixins: [downloadImageMixin],
         computed: {
-            municipalities() {
-                return this.$store.state.municipalities.all;
-            },
             activeParties() {
                 return this.$store.state.parties.active;
             },
@@ -25,26 +22,44 @@
             },
             string2() {
                 return this.activePartiesString;
+            },
+            regions() {
+                return this.$store.getters['ui/regions'];
             }
         },
         methods: {
+            updatePaths(settings) {
+                for (let region of this.regions) {
+                    for (let subregion of region.regions) {
+                        for (let path of subregion.paths) {
+                            if (!path.storedPaths[settings.key]) {
+                                path.create(settings);
+                            }
+                        }
+                    }
+                }
+            },
             print() {
-                let factor = 4.5;
+                let factor, settings;
+                factor = 4.5;
+                settings = {
+                    key: 'map-poster',
+                    width: 597*factor,
+                    height: 656*factor,
+                    shiftX: -100,
+                    shiftY: 500,
+                    zoom: 200*factor,
+                    border: 3
+                };
+                this.updatePaths(settings);
+
                 this.prepair();
                 this.addHead().then(() => {
-                    let settings = {
-                        key: 'map-poster',
-                        width: 597*factor,
-                        height: 656*factor,
-                        shiftX: -100,
-                        shiftY: 500,
-                        zoom: 200*factor,
-                        border: 3
-                    };
+
                     this.addCreator();
                     this.addCustomText(this.string1, 480, 280);
                     this.addCustomText(this.string2, 480, 440);
-                    canvasTools.draw(this.ctx, this.municipalities, settings, this.activeParties);
+                    canvasTools.draw(this.ctx, this.regions, settings, this.activeParties);
                     this.finish();
                 });
             }
